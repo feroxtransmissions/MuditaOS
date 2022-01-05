@@ -956,18 +956,11 @@ namespace app
 
     void ApplicationCommon::handleNotificationsChanged(std::unique_ptr<gui::SwitchData> notificationsParams)
     {
-        if (auto window = getCurrentWindow()->getName(); isWindowPhoneLock(window)) {
+        if (auto window = getCurrentWindow()->getName(); window == gui::popup::window::phone_lock_window) {
 
             auto refreshMode = getRefreshModeFromNotifications(notificationsParams.get());
             updateCurrentWindow(std::move(notificationsParams), gui::ShowMode::GUI_SHOW_INIT, refreshMode);
         }
-    }
-
-    bool ApplicationCommon::isWindowPhoneLock(std::string const &window)
-    {
-        return window == gui::popup::window::phone_lock_window_clock ||
-               window == gui::popup::window::phone_lock_window_quote ||
-               window == gui::popup::window::phone_lock_window_logo;
     }
 
     gui::RefreshModes ApplicationCommon::getRefreshModeFromNotifications(gui::SwitchData *notificationsParams)

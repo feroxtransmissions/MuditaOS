@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "PhoneLockedWindowBase.hpp"
+#include "WallpaperBase.hpp"
 #include <apps-common/popups/presenter/QuotesPresenter.hpp>
 #include <TextFixedSize.hpp>
 
@@ -28,18 +28,19 @@ namespace gui
 
     } // namespace style
 
-    class PhoneLockedWindowQuote : public PhoneLockedWindowBase
+    class WallpaperQuote : public WallpaperBase
     {
       private:
         std::unique_ptr<QuotesPresenter> quotesPresenter;
-        VBox *textBox    = nullptr;
+        VBox *textBox            = nullptr;
         TextFixedSize *quoteText = nullptr;
-        Text *authorText = nullptr;
+        Text *authorText         = nullptr;
 
       public:
-        PhoneLockedWindowQuote(app::ApplicationCommon *app, const std::string &name);
-        void buildInterface() override;
-        void onBeforeShow(ShowMode mode, SwitchData *data) override;
+        WallpaperQuote(app::ApplicationCommon *app, Item *parent);
+        void build() override;
+        void show() override;
+        void hide() override;
     };
 
 } /* namespace gui */

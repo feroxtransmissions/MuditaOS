@@ -3,26 +3,27 @@
 
 #pragma once
 
-#include "PhoneLockedWindowBase.hpp"
+#include "WallpaperBase.hpp"
 #include <widgets/ClockDateWidget.hpp>
 #include <notifications/NotificationsModel.hpp>
 #include <ListView.hpp>
 
 namespace gui
 {
-    class PhoneLockedWindowClock : public PhoneLockedWindowBase
+    class WallpaperClock : public WallpaperBase
     {
       private:
         gui::ClockDateWidget *clockDate                             = nullptr;
         gui::ListView *notificationsList                            = nullptr;
         std::shared_ptr<gui::NotificationsModel> notificationsModel = nullptr;
-        bool refreshedOnPhoneLockTimeLock                           = false;
 
       public:
-        PhoneLockedWindowClock(app::ApplicationCommon *app, const std::string &name);
-        void buildInterface() override;
-        void onBeforeShow(ShowMode mode, SwitchData *data) override;
-        bool updateTime() override;
+        WallpaperClock(gui::Item *parent, std::shared_ptr<gui::NotificationsModel> notificationsModel);
+        void build() override;
+        void show() override;
+        void hide() override;
+
+        void updateTime();
     };
 
 } /* namespace gui */

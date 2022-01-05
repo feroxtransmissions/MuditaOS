@@ -3,7 +3,9 @@
 
 #pragma once
 
-#include "PhoneLockedWindowBase.hpp"
+#include "WallpaperBase.hpp"
+
+#include <ImageBox.hpp>
 
 namespace gui
 {
@@ -15,13 +17,16 @@ namespace gui
         } // namespace logo
 
     } // namespace style
-    class PhoneLockedWindowLogo : public PhoneLockedWindowBase
+    class WallpaperLogo : public WallpaperBase
     {
       private:
+        ImageBox *logoImage = nullptr;
+
       public:
-        PhoneLockedWindowLogo(app::ApplicationCommon *app, const std::string &name);
-        void buildInterface() override;
-        void onBeforeShow(ShowMode mode, SwitchData *data) override;
+        WallpaperLogo(gui::Item *parent);
+        void build() override;
+        void show() override;
+        void hide() override;
     };
 
 } /* namespace gui */

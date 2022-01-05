@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+// Copyright (c) 2017-2022, Mudita Sp. z.o.o. All rights reserved.
 // For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 
 #include <appmgr/ApplicationManager.hpp>
@@ -514,17 +514,8 @@ namespace app::manager
 
     auto ApplicationManager::resolveHomeWindow() -> std::string
     {
-        if (phoneLockHandler.isPhoneLocked()) {
-            switch (wallpaperModel.getWallpaper()) {
-            case gui::WallpaperOption::Clock:
-                return gui::popup::window::phone_lock_window_clock;
-            case gui::WallpaperOption::Quote:
-                return gui::popup::window::phone_lock_window_quote;
-            case gui::WallpaperOption::Logo:
-                return gui::popup::window::phone_lock_window_logo;
-            }
-        }
-        return gui::name::window::main_window;
+        return phoneLockHandler.isPhoneLocked() ? gui::popup::window::phone_lock_window
+                                                : gui::name::window::main_window;
     }
 
     auto ApplicationManager::resolveHomeApplication() -> std::string

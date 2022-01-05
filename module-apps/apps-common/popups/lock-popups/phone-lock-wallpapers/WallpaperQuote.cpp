@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
 // For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 
-#include "PhoneLockedWindowQuote.hpp"
+#include "WallpaperQuote.hpp"
 #include <service-appmgr/Controller.hpp>
 #include <ImageBox.hpp>
 #include <Text.hpp>
@@ -9,11 +9,9 @@
 
 namespace gui
 {
-    PhoneLockedWindowQuote::PhoneLockedWindowQuote(app::ApplicationCommon *app, const std::string &name)
-        : PhoneLockedWindowBase(app, name), quotesPresenter{std::make_unique<QuotesPresenter>(app)}
+    WallpaperQuote::WallpaperQuote(app::ApplicationCommon *app, Item *parent)
+        : WallpaperBase(parent), quotesPresenter{std::make_unique<QuotesPresenter>(app)}
     {
-        buildInterface();
-
         quotesPresenter->setQuoteDisplayCallback([&](std::string quote, std::string author) {
             quoteText->setText(quote);
             quoteText->setMinimumWidthToFitText();
@@ -25,9 +23,9 @@ namespace gui
         });
     }
 
-    void PhoneLockedWindowQuote::buildInterface()
+    void WallpaperQuote::build()
     {
-        textBox = new VBox(this,
+        textBox = new VBox(parent,
                            ::style::window::default_left_margin,
                            style::textBox::y,
                            ::style::window::default_body_width,
@@ -57,13 +55,17 @@ namespace gui
         textBox->resizeItems();
     }
 
-    void PhoneLockedWindowQuote::onBeforeShow(ShowMode mode, SwitchData *data)
+    void WallpaperQuote::show()
     {
-        navBar->setActive(nav_bar::Side::Left, false);
-        navBar->setText(nav_bar::Side::Center, utils::translate("app_desktop_unlock"));
-        navBar->setActive(nav_bar::Side::Right, false);
-
         quotesPresenter->requestQuote();
+        textBox->setVisible(true);
+        textBox->resizeItems();
+    }
+
+    void WallpaperQuote::hide()
+    {
+        textBox->setVisible(false);
+        textBox->resizeItems();
     }
 
 } /* namespace gui */

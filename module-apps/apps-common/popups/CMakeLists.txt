@@ -18,15 +18,16 @@ target_sources(apps-common
 		VolumeWindow.cpp
 		WindowWithTimer.cpp
 		lock-popups/PhoneLockedInfoWindow.cpp
-		lock-popups/PhoneLockedWindowBase.cpp
-		lock-popups/PhoneLockedWindowClock.cpp
-		lock-popups/PhoneLockedWindowQuote.cpp
-		lock-popups/PhoneLockedWindowLogo.cpp
+		lock-popups/PhoneLockedWindow.cpp
 		lock-popups/PhoneLockInputWindow.cpp
 		lock-popups/PhoneLockChangeInfoWindow.cpp
 		lock-popups/SimLockInputWindow.cpp
 		lock-popups/SimInfoWindow.cpp
 		lock-popups/SimNotReadyWindow.cpp
+		lock-popups/phone-lock-wallpapers/WallpaperBase.cpp
+		lock-popups/phone-lock-wallpapers/WallpaperClock.cpp
+		lock-popups/phone-lock-wallpapers/WallpaperQuote.cpp
+		lock-popups/phone-lock-wallpapers/WallpaperLogo.cpp
 		presenter/PowerOffPresenter.cpp
 		presenter/AlarmPresenter.cpp
 		data/PopupRequestParamsBase.cpp
@@ -44,15 +45,16 @@ target_sources(apps-common
 		data/PopupData.hpp
 		lock-popups/PhoneLockedInfoData.hpp
 		lock-popups/PhoneLockedInfoWindow.hpp
-		lock-popups/PhoneLockedWindowBase.hpp
-		lock-popups/PhoneLockedWindowClock.hpp
-		lock-popups/PhoneLockedWindowQuote.hpp
-		lock-popups/PhoneLockedWindowLogo.hpp
+		lock-popups/PhoneLockedWindow.hpp
 		lock-popups/PhoneLockInputWindow.hpp
 		lock-popups/PhoneLockChangeInfoWindow.hpp
 		lock-popups/SimLockInputWindow.hpp
 		lock-popups/SimInfoWindow.hpp
 		lock-popups/SimNotReadyWindow.hpp
+		lock-popups/phone-lock-wallpapers/WallpaperBase.hpp
+		lock-popups/phone-lock-wallpapers/WallpaperClock.hpp
+		lock-popups/phone-lock-wallpapers/WallpaperQuote.hpp
+		lock-popups/phone-lock-wallpapers/WallpaperLogo.hpp
 		presenter/PowerOffPresenter.hpp
 		presenter/QuotesPresenter.hpp
 

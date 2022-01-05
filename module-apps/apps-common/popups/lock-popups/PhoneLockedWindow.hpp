@@ -1,0 +1,45 @@
+// Copyright (c) 2017-2022, Mudita Sp. z.o.o. All rights reserved.
+// For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
+
+#pragma once
+
+#include "phone-lock-wallpapers/WallpaperClock.hpp"
+#include "phone-lock-wallpapers/WallpaperQuote.hpp"
+#include "phone-lock-wallpapers/WallpaperLogo.hpp"
+
+#include <AppWindow.hpp>
+
+namespace app
+{
+    class ApplicationDesktop;
+}
+
+namespace gui
+{
+    class PhoneLockedWindow : public AppWindow
+    {
+      private:
+        std::unique_ptr<WallpaperClock> clockWallpaper = nullptr;
+        std::unique_ptr<WallpaperQuote> quoteWallpaper = nullptr;
+        std::unique_ptr<WallpaperLogo> logoWallpaper   = nullptr;
+
+      protected:
+        gui::ClockDateWidget *clockDate                             = nullptr;
+        gui::ListView *notificationsList                            = nullptr;
+        std::shared_ptr<gui::NotificationsModel> notificationsModel = nullptr;
+        bool refreshedOnPhoneLockTimeLock                           = false;
+
+        bool processLongReleaseEvent(const InputEvent &inputEvent);
+
+      public:
+        PhoneLockedWindow(app::ApplicationCommon *app, const std::string &name);
+
+        bool onInput(const InputEvent &inputEvent) override;
+        void onBeforeShow(ShowMode mode, SwitchData *data) override;
+        void buildInterface() override;
+        status_bar::Configuration configureStatusBar(status_bar::Configuration appConfiguration) override;
+
+        bool updateTime() override;
+    };
+
+} /* namespace gui */

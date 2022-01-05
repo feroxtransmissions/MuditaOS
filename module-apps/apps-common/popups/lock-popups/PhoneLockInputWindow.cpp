@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+// Copyright (c) 2017-2022, Mudita Sp. z.o.o. All rights reserved.
 // For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 
 #include "PhoneLockInputWindow.hpp"
@@ -111,7 +111,7 @@ namespace gui
         }
         else if (inputEvent.is(KeyCode::KEY_ENTER) && navBar->isActive(nav_bar::Side::Center)) {
             if (lock->isState(locks::Lock::LockState::Blocked)) {
-                application->switchWindow(popup::window::phone_lock_window_clock);
+                application->switchWindow(popup::window::phone_lock_window);
             }
             else {
                 lock->consumeState();
