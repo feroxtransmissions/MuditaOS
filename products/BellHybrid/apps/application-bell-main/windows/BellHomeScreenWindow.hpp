@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+// Copyright (c) 2017-2022, Mudita Sp. z.o.o. All rights reserved.
 // For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 
 #pragma once
@@ -14,7 +14,7 @@ namespace style::bell_home_screen
 {
     constexpr inline auto temperature_w = 85U;
     constexpr inline auto temperature_h = 102U;
-    constexpr inline auto bottom_desc_w = 390U;
+    constexpr inline auto bottom_desc_w = 550U;
     constexpr inline auto bottom_desc_h = 102U;
 
     enum class ParentType
