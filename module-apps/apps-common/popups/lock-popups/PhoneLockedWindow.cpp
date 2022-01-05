@@ -7,11 +7,13 @@
 #include <locks/input/PhoneLockedKeysWhitelist.hpp>
 #include <service-appmgr/Controller.hpp>
 #include <popups/data/PopupData.hpp>
+#include <service-appmgr/messages/GetWallpaperOptionRequest.hpp>
+#include <service-appmgr/Constants.hpp>
 
 namespace gui
 {
     PhoneLockedWindow::PhoneLockedWindow(app::ApplicationCommon *app, const std::string &name)
-        : AppWindow(app, name),
+        : AppWindow(app, name), AsyncCallbackReceiver(app),
           notificationsModel(std::make_shared<NotificationsModel>(NotificationsListPlacement::LockedScreen))
     {
         clockWallpaper = std::make_unique<WallpaperClock>(this, notificationsModel);
@@ -29,17 +31,13 @@ namespace gui
         clockWallpaper->build();
         quoteWallpaper->build();
         logoWallpaper->build();
-    }
 
-    void PhoneLockedWindow::onBeforeShow(ShowMode mode, SwitchData *data)
-    {
-        auto notificationData = dynamic_cast<app::manager::actions::NotificationsChangedParams *>(data);
-        auto wallpaperData    = dynamic_cast<WallpaperData *>(data);
-        if (notificationData) {
-            notificationsModel->updateData(notificationData);
-        }
-        else if (wallpaperData) {
-            switch (wallpaperData->getWallpaperOption()) {
+        auto request = std::make_unique<app::manager::GetWallpaperOptionRequest>();
+        auto task    = app::AsyncRequest::createFromMessage(std::move(request), service::name::appmgr);
+        auto cb      = [&](auto response) {
+            auto result = dynamic_cast<app::manager::GetWallpaperOptionResponse *>(response);
+            LOG_ERROR("wallpaper opt: %d", static_cast<int>(result->getWallpaperOption()));
+            switch (result->getWallpaperOption()) {
             case WallpaperOption::Clock:
                 clockWallpaper->show();
                 quoteWallpaper->hide();
@@ -56,9 +54,18 @@ namespace gui
                 logoWallpaper->show();
                 break;
             }
-        }
+            return true;
+        };
+        task->execute(application, this, cb);
+    }
 
-        if (!notificationData && !notificationsModel->isPhoneTimeLock()) {
+    void PhoneLockedWindow::onBeforeShow(ShowMode mode, SwitchData *data)
+    {
+        auto notificationData = dynamic_cast<app::manager::actions::NotificationsChangedParams *>(data);
+        if (notificationData) {
+            notificationsModel->updateData(notificationData);
+        }
+        else if (!notificationsModel->isPhoneTimeLock()) {
             app::manager::Controller::requestNotifications(application);
             navBar->setActive(nav_bar::Side::Left, false);
             navBar->setActive(nav_bar::Side::Center, false);

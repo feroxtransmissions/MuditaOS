@@ -16,7 +16,7 @@ namespace app
 
 namespace gui
 {
-    class PhoneLockedWindow : public AppWindow
+    class PhoneLockedWindow : public AppWindow, public app::AsyncCallbackReceiver
     {
       private:
         std::unique_ptr<WallpaperClock> clockWallpaper = nullptr;

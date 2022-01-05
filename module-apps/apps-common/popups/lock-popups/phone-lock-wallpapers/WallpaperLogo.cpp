@@ -21,6 +21,7 @@ namespace gui
                                  new Image("logo", ImageTypeSpecifier::W_G));
         logoImage->setMinimumSizeToFitImage();
         logoImage->setAlignment(Alignment(Alignment::Horizontal::Center, Alignment::Vertical::Top));
+        hide();
     }
 
     void WallpaperLogo::show()

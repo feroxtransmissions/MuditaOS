@@ -22,21 +22,19 @@ namespace gui
                                          style::notifications::model::h,
                                          notificationsModel,
                                          listview::ScrollBarType::None);
-        parent->setFocusItem(nullptr);
+        hide();
     }
 
     void WallpaperClock::show()
     {
         clockDate->setVisible(true);
         notificationsList->setVisible(true);
-        parent->setFocusItem(nullptr);
     }
 
     void WallpaperClock::hide()
     {
         clockDate->setVisible(false);
         notificationsList->setVisible(false);
-        parent->setFocusItem(nullptr);
     }
 
     void WallpaperClock::updateTime()

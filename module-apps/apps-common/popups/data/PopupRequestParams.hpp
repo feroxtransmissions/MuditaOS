@@ -11,25 +11,8 @@
 #include <locks/widgets/Lock.hpp>
 #include <locks/data/LockData.hpp>
 
-#include <application-settings/data/WallpaperOption.hpp>
-
 namespace gui
 {
-    class PhoneLockRequestParams : public PopupRequestParams
-    {
-      public:
-        PhoneLockRequestParams(gui::popup::ID popupId, WallpaperOption wallpaperOption)
-            : PopupRequestParams{popupId}, wallpaperOption{wallpaperOption}
-        {}
-
-        [[nodiscard]] const auto getWallpaperOption() -> WallpaperOption
-        {
-            return wallpaperOption;
-        }
-
-      private:
-        WallpaperOption wallpaperOption;
-    };
     class PhoneUnlockInputRequestParams : public PopupRequestParams
     {
       public:

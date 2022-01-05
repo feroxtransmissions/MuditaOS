@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+// Copyright (c) 2017-2022, Mudita Sp. z.o.o. All rights reserved.
 // For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 
 #include "WallpaperQuote.hpp"
@@ -52,7 +52,7 @@ namespace gui
         authorText->setFont(::style::window::font::small);
         authorText->setAlignment(Alignment(Alignment::Horizontal::Center, Alignment::Vertical::Center));
 
-        textBox->resizeItems();
+        hide();
     }
 
     void WallpaperQuote::show()

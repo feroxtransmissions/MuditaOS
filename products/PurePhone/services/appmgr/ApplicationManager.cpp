@@ -16,6 +16,7 @@
 #include <service-appmgr/Constants.hpp>
 #include <service-appmgr/messages/AutoLockRequests.hpp>
 #include <service-appmgr/messages/GetAllNotificationsRequest.hpp>
+#include <service-appmgr/messages/GetWallpaperOptionRequest.hpp>
 #include <service-bluetooth/messages/BluetoothModeChanged.hpp>
 #include <service-cellular/CellularMessage.hpp>
 #include <service-db/DBNotificationMessage.hpp>
@@ -169,6 +170,9 @@ namespace app::manager
             notificationProvider.requestNotSeenNotifications();
             notificationProvider.send();
             return sys::msgHandled();
+        });
+        connect(typeid(GetWallpaperOptionRequest), [&](sys::Message *request) {
+            return std::make_shared<app::manager::GetWallpaperOptionResponse>(wallpaperModel.getWallpaper());
         });
         connect(typeid(db::NotificationMessage), [&](sys::Message *msg) {
             auto msgl = static_cast<db::NotificationMessage *>(msg);
@@ -563,30 +567,6 @@ namespace app::manager
         default:
             return ApplicationManagerCommon::handleAction(action);
         }
-    }
-
-    auto ApplicationManager::handleActionOnFocusedApp(ActionEntry &action) -> ActionProcessStatus
-    {
-        if (action.actionId == actions::Action::ShowPopup) {
-            auto data = dynamic_cast<gui::PopupRequestParams *>(action.params.get());
-            if (data == nullptr) {
-                return ActionProcessStatus::Skipped;
-            }
-            if (data->getPopupId() == gui::popup::ID::PhoneLock) {
-                auto targetApp = getFocusedApplication();
-                if (targetApp == nullptr) {
-                    return ActionProcessStatus::Skipped;
-                }
-                action.setTargetApplication(targetApp->name());
-
-                // Injecting wallpaper option
-                auto params = std::make_unique<gui::PhoneLockRequestParams>(gui::popup::ID::PhoneLock,
-                                                                            wallpaperModel.getWallpaper());
-                app::ApplicationCommon::requestAction(this, targetApp->name(), action.actionId, std::move(params));
-                return ActionProcessStatus::Accepted;
-            }
-        }
-        return ApplicationManagerCommon::handleActionOnFocusedApp(action);
     }
 
     void ApplicationManager::handleStart(StartAllowedMessage *msg)

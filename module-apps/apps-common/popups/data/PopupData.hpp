@@ -5,7 +5,6 @@
 #pragma once
 #include <SwitchData.hpp>
 #include <module-audio/Audio/AudioCommon.hpp>
-#include <application-settings/data/WallpaperOption.hpp>
 
 namespace gui
 {
@@ -52,20 +51,4 @@ namespace gui
         const sys::phone_modes::PhoneMode phoneMode;
         const bool isFlightModeEnabled;
     };
-
-    class WallpaperData : public SwitchData
-    {
-      public:
-        WallpaperData(WallpaperOption wallpaperOption) : wallpaperOption{wallpaperOption}
-        {}
-
-        [[nodiscard]] auto getWallpaperOption() -> WallpaperOption
-        {
-            return wallpaperOption;
-        }
-
-      private:
-        WallpaperOption wallpaperOption;
-    };
-
 } // namespace gui
