@@ -7,18 +7,17 @@
 #include <locks/input/PhoneLockedKeysWhitelist.hpp>
 #include <service-appmgr/Controller.hpp>
 #include <popups/data/PopupData.hpp>
-#include <service-appmgr/messages/GetWallpaperOptionRequest.hpp>
-#include <service-appmgr/Constants.hpp>
 
 namespace gui
 {
     PhoneLockedWindow::PhoneLockedWindow(app::ApplicationCommon *app, const std::string &name)
-        : AppWindow(app, name), AsyncCallbackReceiver(app),
+        : AppWindow(app, name),
           notificationsModel(std::make_shared<NotificationsModel>(NotificationsListPlacement::LockedScreen))
     {
-        clockWallpaper = std::make_unique<WallpaperClock>(this, notificationsModel);
-        quoteWallpaper = std::make_unique<WallpaperQuote>(app, this);
-        logoWallpaper  = std::make_unique<WallpaperLogo>(this);
+        clockWallpaper      = std::make_shared<WallpaperClock>(this, notificationsModel);
+        auto quoteWallpaper = std::make_shared<WallpaperQuote>(app, this);
+        auto logoWallpaper  = std::make_shared<WallpaperLogo>(this);
+        wallpaperPresenter  = std::make_unique<WallpaperPresenter>(app, clockWallpaper, quoteWallpaper, logoWallpaper);
 
         buildInterface();
 
@@ -28,35 +27,7 @@ namespace gui
     void PhoneLockedWindow::buildInterface()
     {
         AppWindow::buildInterface();
-        clockWallpaper->build();
-        quoteWallpaper->build();
-        logoWallpaper->build();
-
-        auto request = std::make_unique<app::manager::GetWallpaperOptionRequest>();
-        auto task    = app::AsyncRequest::createFromMessage(std::move(request), service::name::appmgr);
-        auto cb      = [&](auto response) {
-            auto result = dynamic_cast<app::manager::GetWallpaperOptionResponse *>(response);
-            LOG_ERROR("wallpaper opt: %d", static_cast<int>(result->getWallpaperOption()));
-            switch (result->getWallpaperOption()) {
-            case WallpaperOption::Clock:
-                clockWallpaper->show();
-                quoteWallpaper->hide();
-                logoWallpaper->hide();
-                break;
-            case WallpaperOption::Quote:
-                clockWallpaper->hide();
-                quoteWallpaper->show();
-                logoWallpaper->hide();
-                break;
-            case WallpaperOption::Logo:
-                clockWallpaper->hide();
-                quoteWallpaper->hide();
-                logoWallpaper->show();
-                break;
-            }
-            return true;
-        };
-        task->execute(application, this, cb);
+        wallpaperPresenter->setupWallpaper();
     }
 
     void PhoneLockedWindow::onBeforeShow(ShowMode mode, SwitchData *data)
@@ -92,7 +63,6 @@ namespace gui
 
     bool PhoneLockedWindow::updateTime()
     {
-        // pass only to wallpaper clock
         auto ret = AppWindow::updateTime();
         clockWallpaper->updateTime();
         return ret;

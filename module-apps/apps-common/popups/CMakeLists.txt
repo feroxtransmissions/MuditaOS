@@ -32,6 +32,7 @@ target_sources(apps-common
 		presenter/AlarmPresenter.cpp
 		data/PopupRequestParamsBase.cpp
 		presenter/QuotesPresenter.cpp
+		presenter/WallpaperPresenter.cpp
 	PRIVATE
 		HomeModesWindow.hpp
 		Popups.hpp
@@ -57,5 +58,6 @@ target_sources(apps-common
 		lock-popups/phone-lock-wallpapers/WallpaperLogo.hpp
 		presenter/PowerOffPresenter.hpp
 		presenter/QuotesPresenter.hpp
+		presenter/WallpaperPresenter.hpp
 
 )

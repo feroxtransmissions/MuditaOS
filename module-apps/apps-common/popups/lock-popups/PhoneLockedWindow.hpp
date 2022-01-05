@@ -7,6 +7,7 @@
 #include "phone-lock-wallpapers/WallpaperQuote.hpp"
 #include "phone-lock-wallpapers/WallpaperLogo.hpp"
 
+#include <apps-common/popups/presenter/WallpaperPresenter.hpp>
 #include <AppWindow.hpp>
 
 namespace app
@@ -16,12 +17,11 @@ namespace app
 
 namespace gui
 {
-    class PhoneLockedWindow : public AppWindow, public app::AsyncCallbackReceiver
+    class PhoneLockedWindow : public AppWindow
     {
       private:
-        std::unique_ptr<WallpaperClock> clockWallpaper = nullptr;
-        std::unique_ptr<WallpaperQuote> quoteWallpaper = nullptr;
-        std::unique_ptr<WallpaperLogo> logoWallpaper   = nullptr;
+        std::shared_ptr<WallpaperClock> clockWallpaper         = nullptr;
+        std::unique_ptr<WallpaperPresenter> wallpaperPresenter = nullptr;
 
       protected:
         gui::ClockDateWidget *clockDate                             = nullptr;
